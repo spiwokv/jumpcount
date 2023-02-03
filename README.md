@@ -2,9 +2,9 @@
 
 ## Estimation of uncertainties of molecular simulations
 
-The free energy difference ΔG_0 between two states can be calculated by
+The free energy difference ΔG<sub>0</sub> between two states can be calculated by
 a molecular dynamics simulation from time spent in both states. Here we
-provide an online tool to calculate errorbars of ΔG_0 by the JumpCount
+provide an online tool to calculate errorbars of ΔG<sub>0</sub> by the JumpCount
 method solely from numbers of transitions and temperature.
 
 see https://jumpcount.cz
