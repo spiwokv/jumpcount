@@ -1,0 +1,293 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JumpCount</title>
+<style>
+body {
+  font-family:sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+@media (min-device-width:320px)  {
+  p {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  form {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  div {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-device-width:481px)  {
+  p {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  form {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  div {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-device-width:641px)  {
+  p {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  form {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  div {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-device-width:961px)  {
+  p {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  form {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  div {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-device-width:1025px) {
+  p {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  form {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  div {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-device-width:1281px) {
+  p {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  form {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  div {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+input[type=text] {
+  width: 50pt;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input[type=button] {
+  width: 200pt;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+div.res {
+  padding: 14px 20px;
+}
+div.res2 {
+  padding: 14px 20px;
+  font-size: 12px;
+}
+a.help {
+  text-decoration: none;
+  font-size: 9px;
+  padding: 14px 20px;
+  color: #008CBA;
+}
+a.back {
+  text-decoration: none;
+  font-size: 20px;
+  color: #008CBA;
+}
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+</head>
+<body>
+<script src="libR.min.js"></script>
+<script>
+    const libR =  window.libR;
+    const { FDist } = libR;
+    const { df, pf, qf, rf } = FDist();
+    const {
+        special: { trigamma },
+        R: { numberPrecision, seq: _seq, flatten: c }
+    } = libR;
+
+    function recalculate1() {
+      var a2b = parseFloat(document.getElementById("a2b").value);
+      var b2a = parseFloat(document.getElementById("b2a").value);
+      var temp = parseFloat(document.getElementById("temp").value);
+      var alpha = parseFloat(document.getElementById("alpha").value);
+      var upper =  8.314*temp*Math.log(qf(p=1-alpha/2.0, df1=2*b2a, df2=2*a2b, ncp=undefined, lowerTail=true, asLog=false))/1000.0;
+      var upper2 = upper/4.184;
+      upper = Math.ceil(100*upper)/100;
+      upper2 = Math.ceil(100*upper2)/100;
+      var lower = -8.314*temp*Math.log(qf(p=alpha/2.0, df1=2*b2a, df2=2*a2b, ncp=undefined, lowerTail=true, asLog=false))/1000.0;
+      var lower2 = lower/4.184;
+      lower = Math.ceil(100*lower)/100;
+      lower2 = Math.ceil(100*lower2)/100;
+      var se = 8.314*temp*Math.sqrt(trigamma(a2b)+trigamma(b2a))/1000.0;
+      var se2 = se / 4.184;
+      se = Math.ceil(100*se)/100;
+      se2 = Math.ceil(100*se2)/100;
+      perc = Math.ceil(100000000000*(1-alpha))/1000000000;
+      if(a2b < 1 || b2a < 1) {
+        document.getElementById('state').innerHTML = "Number of transitions must be &gt; 1";
+        document.getElementById('upper').innerHTML = "";
+        document.getElementById('lower').innerHTML = "";
+        document.getElementById('upper2').innerHTML = "";
+        document.getElementById('lower2').innerHTML = "";
+        document.getElementById('se').innerHTML = "";
+        document.getElementById('se2').innerHTML = "";
+        document.getElementById('warning').innerHTML = "";
+      } else if(alpha >= 1.0) {
+        document.getElementById('state').innerHTML = "Alpha must be &lt; 1";
+        document.getElementById('upper').innerHTML = "";
+        document.getElementById('lower').innerHTML = "";
+        document.getElementById('upper2').innerHTML = "";
+        document.getElementById('lower2').innerHTML = "";
+        document.getElementById('se').innerHTML = "";
+        document.getElementById('se2').innerHTML = "";
+        document.getElementById('warning').innerHTML = "";
+      } else if(Math.abs(a2b-b2a)>1) {
+        document.getElementById('state').innerHTML = "";
+        document.getElementById('upper').innerHTML = "Upper errorbar of " + String(perc) + "% CI: " + String(upper) + " kJ/mol";
+        document.getElementById('lower').innerHTML = "Lower errorbar of " + String(perc) + "% CI: " + String(lower) + " kJ/mol";
+        document.getElementById('upper2').innerHTML = "Upper errorbar of " + String(perc) + "% CI: " + String(upper2) + " kcal/mol";
+        document.getElementById('lower2').innerHTML = "Lower errorbar of " + String(perc) + "% CI: " + String(lower2) + " kcal/mol";
+        document.getElementById('se').innerHTML = "Standard error: " + String(se) + " kJ/mol";
+        document.getElementById('se2').innerHTML = "Standard error: " + String(se2) + " kcal/mol";
+        document.getElementById('warning').innerHTML = "Warning: |<i>n</i><sub>A</sub>-<i>n</i><sub>B</sub>| &gt; 1, this applies for a series of simulations, not one simulation.";
+      } else {
+        document.getElementById('state').innerHTML = "";
+        document.getElementById('upper').innerHTML = "Upper errorbar of " + String(perc) + "% CI: " + String(upper) + " kJ/mol";
+        document.getElementById('lower').innerHTML = "Lower errorbar of " + String(perc) + "% CI: " + String(lower) + " kJ/mol";
+        document.getElementById('upper2').innerHTML = "Upper errorbar of " + String(perc) + "% CI: " + String(upper2) + " kcal/mol";
+        document.getElementById('lower2').innerHTML = "Lower errorbar of " + String(perc) + "% CI: " + String(lower2) + " kcal/mol";
+        document.getElementById('se').innerHTML = "Standard error: " + String(se) + " kJ/mol";
+        document.getElementById('se2').innerHTML = "Standard error: " + String(se2) + " kcal/mol";
+        document.getElementById('warning').innerHTML = "";
+      }
+    }
+
+    function resetit() {
+      document.getElementById('state').innerHTML = "";
+      document.getElementById('upper').innerHTML = "";
+      document.getElementById('lower').innerHTML = "";
+      document.getElementById('upper2').innerHTML = "";
+      document.getElementById('lower2').innerHTML = "";
+      document.getElementById('se').innerHTML = "";
+      document.getElementById('se2').innerHTML = "";
+      document.getElementById('warning').innerHTML = "";
+    }
+
+</script>
+<h2>JumpCount</h2>
+<h3>calculations of errorbars of &Delta;G predictions from molecular simulations</h3>
+<form id="frm1">
+Number of transitions from A to B:<input type="text" id="a2b" value=4 onchange="resetit()">
+<a href="help1.html" class="help">HELP</a><br>
+Number of transitions from B to A: <input type="text" id="b2a" value=4 onchange="resetit()">
+<a href="help1.html" class="help">HELP</a><br>
+Temperature in Kelvins: <input type="text" id="temp" value=300 onchange="resetit()"><br>
+Alpha (0.05 for 95 % CI): <input type="text" id="alpha" value=0.05 onchange="resetit()">
+<a href="help2.html" class="help">HELP</a><br>
+<input type="button" onclick="recalculate1()" value="Submit">
+</form>
+<div class="res" id="state"></div>
+<div class="res" id="upper"></div>
+<div class="res" id="lower"></div>
+<div class="res" id="upper2"></div>
+<div class="res" id="lower2"></div>
+<div class="res" id="se"></div>
+<div class="res" id="se2"></div>
+<div class="res2" id="warning"></div>
+<a class="back" href="index.html">&lt;&lt; BACK</a>
+<table class="center"><tr><td>Support:</td>
+<td><a href="https://www.elixir-czech.cz/"><img src="elixir.png" alt="ELIXIR CZ"></a></td></tr></table>
+</body>
+</html>
+

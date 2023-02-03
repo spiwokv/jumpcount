@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JumpCount</title>
+<style>
+body {
+  font-family:sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+@media (min-device-width:320px)  {
+  p {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-device-width:481px)  {
+  p {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-device-width:641px)  {
+  p {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-device-width:961px)  {
+  p {
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-device-width:1025px) {
+  p {
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-device-width:1281px) {
+  p {
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+input[type=text] {
+  width: 100pt;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input[type=button] {
+  width: 300pt;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+div.res {
+  padding: 14px 20px;
+}
+a {
+  text-decoration: none;
+  font-size: 20px;
+  color: #008CBA;
+}
+span.red {
+  color: #EB5834;
+}
+span.blue {
+  color: #529CEB;
+}
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+.small {
+  font-size: 10px;
+}
+</style>
+</head>
+<body>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<h2>JumpCount</h2>
+<h3>calculations of errorbars of &Delta;G predictions<br>from molecular simulations</h3>
+<p>To calculate &Delta;<i>G</i><sub>0</sub> of transition from the state A to state B, 
+it is necessary to sum time spent in the state A and time spent in the state B.
+Next, &Delta;<i>G</i> can be calculated as:<br>
+\[\Delta G_{0,AB} = -kT \log {{\sum_{i=1}^{n_B} t_{Bi}} \over {\sum_{j=1}^{n_A} t_{Ai}}},\]
+where <i>k</i> = 8.314 J mol<sup>-1</sup> K<sup>-1</sup>, <i>T</i> is temperature in K and log is
+the natural logarithm (base <i>e</i>).</p>
+<p>Confidence intervals and standard errors of &Delta;<i>G</i><sub>0</sub> can be calculated
+from temperature and the number of transitions from A to B (<i>n</i><sub>A</sub>) and
+the number of transitions from B to A (<i>n</i><sub>B</sub>).
+<p>In a system with multiple forms, the number of transitions
+from A to B (<i>n<sub>A</sub></i>) and the number of transitions from
+B to A (<i>n<sub>B</sub></i>) must be numbers of <b>accomplished</b>
+transitions. For example, in a system with states A, B
+and C and with transitions <span class="red">A &rarr; B &rarr; A &rarr; B &rarr; A &rarr; B &rarr; C </span><span class="blue">&rarr; B &rarr; C &rarr; B &rarr; A </span><span class="red">&rarr; B &rarr; A &rarr; B &rarr; C </span><span class="blue">&rarr; B &rarr; A</span>, the number of transitions
+from A to C <i>n<sub>A</sub></i> = 2 (two transitions in red) and the
+number of transitions from C to A <i>n<sub>C</sub></i> = 2 (two
+transitions in blue).</p>
+<p>Alternatively, it is possible to run a series of <i>n</i><sub>A</sub> simulations starting
+from A until they reach B and a series of <i>n</i><sub>B</sub> simulations starting from B
+until they reach A. Then, &Delta;<i>G</i> can be calculated as:<br>
+\[\Delta G_{0,AB} = -kT \log {n_A {\sum_{i=1}^{n_B} t_{Bi}} \over { n_B \sum_{j=1}^{n_A} t_{Ai}}}.\]
+It is important to run all simulation until they reach the desired state or to modify the
+formula to:<br>
+\[\Delta G_{0,AB} = -kT \log {n_A ({\sum_{i=1}^{n_B} t_{Bi}} + m_B t_{max}) \over { n_B (\sum_{j=1}^{n_A} t_{Ai}} + m_A t_{max})},\]
+where <i>n</i><sub>A</sub> and <i>n</i><sub>B</sub> are numbers of finished runs (the transition observed)
+starting from A and B, respectively, <i>m</i><sub>A</sub> and <i>m</i><sub>B</sub> are numbers of unfinished
+runs (the transition not observed, terminated at <i>t</i><sub>max</sub>), respectively.
+</p>
+<br>
+<a href="jc.html">&lt;&lt; BACK</a>
+<table class="center"><tr><td>Support:</td>
+<td><a href="https://www.elixir-czech.cz/"><img src="elixir.png" alt="ELIXIR CZ"></a></td></tr></table>
+</body>
+</html>
+

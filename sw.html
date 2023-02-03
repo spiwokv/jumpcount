@@ -1,0 +1,223 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JumpCount</title>
+<style>
+body {
+  font-family:sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+@media (min-device-width:320px)  {
+  p {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-device-width:481px)  {
+  p {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-device-width:641px)  {
+  p {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-device-width:961px)  {
+  p {
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-device-width:1025px) {
+  p {
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (min-device-width:1281px) {
+  p {
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h3 {
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+input[type=text] {
+  width: 100pt;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input[type=button] {
+  width: 300pt;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+div.res {
+  padding: 14px 20px;
+}
+a {
+  text-decoration: none;
+  color: #008CBA;
+}
+a.jc {
+  font-size: 20px;
+}
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+.small {
+  font-size: 10px;
+}
+.code {
+  text-align: left;
+  white-space: pre;
+  font-family: monospace;
+}
+.gray {
+  color: #606060;
+}
+</style>
+</head>
+<body>
+<h2>JumpCount</h2>
+<h3>calculations of errorbars of &Delta;G predictions from molecular simulations</h3>
+<p>R
+<table><tr><td>
+<div class="code">
+nA &lt;- 3       <span class="gray"># number of A to B transitions</span>
+nB &lt;- 3       <span class="gray"># number of B to A transitions</span>
+alpha &lt;- 0.05 <span class="gray"># value of significance level (0.05 for 95 % CI)</span>
+temp &lt;- 300   <span class="gray"># temperature in Kelvins</span>
+err_top    &lt;-  8.314*temp*log(qf(p=(1-alpha/2), df1=2*nB, df2=2*nA))
+err_bottom &lt;- -8.314*temp*log(qf(p=alpha/2, df1=2*nB, df2=2*nA))
+se &lt;- 8.314*temp*sqrt(trigamma(nA) + trigamma(nB))
+print(err_top/1000)     <span class="gray"># height of top errorbar in kJ/mol</span>
+print(err_bottom/1000)  <span class="gray"># height of bottom errorbar in kJ/mol</span>
+print(se/1000)          <span class="gray"># standard error in kJ/mol</span>
+</div>
+</td></tr></table><br>
+Python
+<table><tr><td>
+<div class="code">
+import scipy as sp
+from scipy.stats import f
+nA = 3         <span class="gray"># number of A to B transitions</span>
+nB = 3         <span class="gray"># number of B to A transitions</span>
+alpha = 0.05   <span class="gray"># value of significance level (0.05 for 95 % CI)</span>
+temp = 300.0   <span class="gray"># temperature in Kelvins</span>
+err_top    =  8.314*temp*sp.log(f.ppf(q=(1-alpha/2), dfn=2*nB, dfd=2*nA))
+err_bottom = -8.314*temp*sp.log(f.ppf(q=alpha/2, dfn=2*nB, dfd=2*nA))
+se = 8.314*temp*sp.sqrt(sp.special.polygamma(1, nA) + sp.special.polygamma(1, nB))
+print(err_top/1000.0)     <span class="gray"># height of top errorbar in kJ/mol</span>
+print(err_bottom/1000.0)  <span class="gray"># height of bottom errorbar in kJ/mol</span>
+print(se/1000.0)          <span class="gray"># standard error in kJ/mol</span>
+</div>
+</td></tr></table><br>
+Wolfram Mathematica
+<table><tr><td>
+<div class="code">
+nA = 3;         <span class="gray">(* number of A to B transitions *)</span>
+nB = 3;         <span class="gray">(* number of B to A transitions *)</span>
+alpha = 0.05;   <span class="gray">(* value of significance level (0.05 for 95 % CI) *)</span>
+temp = 300.0;   <span class="gray">(* temperature in Kelvins*)</span>
+errTop = 8.314*temp*Log[Quantile[FRatioDistribution[2*nB, 2*nA], 1 - alpha/2]];
+errBottom = -8.314*temp*Log[Quantile[FRatioDistribution[2*nB, 2*nA], alpha/2]];
+se = 8.314*temp*Sqrt[PolyGamma[1, nA] + PolyGamma[1, nB]];
+Print[errTop/1000.]     <span class="gray">(* height of top errorbar in kJ/mol *)</span>
+Print[errBottom/1000.]  <span class="gray">(* height of bottom errorbar in kJ/mol *)</span>
+Print[se/1000.]         <span class="gray">(* standard error in kJ/mol *)</span>
+</div>
+</td></tr></table><br>
+Octave
+<table><tr><td>
+<div class="code">
+nA = 3          <span class="gray"># number of A to B transitions</span>
+nB = 3          <span class="gray"># number of B to A transitions</span>
+alpha = 0.05    <span class="gray"># value of significance level (0.05 for 95 % CI)</span>
+temp = 300.0    <span class="gray"># temperature in Kelvins</span>
+errTop = 8.314*temp*log(finv(1 - alpha/2, 2*nB, 2*nA))
+errBottom = -8.314*temp*log(finv(alpha/2, 2*nB, 2*nA))
+se = 8.314*temp*sqrt(psi(1, nA) + psi(1, nB))
+errTop/1000.    <span class="gray"># height of top errorbar in kJ/mol</span>
+errBottom/1000. <span class="gray"># height of bottom errorbar in kJ/mol</span>
+se/1000.        <span class="gray"># standard error in kJ/mol</span>
+</div>
+</td></tr></table><br>
+Julia
+<table><tr><td>
+<div class="code">
+using Distributions
+using SpecialFunctions
+nA = 3         <span class="gray"># number of A to B transitions</span>
+nB = 3         <span class="gray"># number of B to A transitions</span>
+alpha = 0.05   <span class="gray"># value of significance level (0.05 for 95 % CI)</span>
+temp = 300.0   <span class="gray"># temperature in Kelvins</span>
+d = FDist(2*nB,2*nA)
+err_top    =  8.314*temp*log(quantile(d, 1-alpha/2.0))
+err_bottom = -8.314*temp*log(quantile(d, alpha/2.0))
+se = 8.314*temp*sqrt(trigamma(nA) + trigamma(nB))
+print(err_top/1000.0)     <span class="gray"># height of top errorbar in kJ/mol</span>
+print(err_bottom/1000.0)  <span class="gray"># height of bottom errorbar in kJ/mol</span>
+print(se/1000.0)          <span class="gray"># standard error in kJ/mol</span>
+</div>
+</td></tr></table><br>
+<a class="back" href="index.html">&lt;&lt; BACK</a>
+<table class="center"><tr><td>Support:</td>
+<td><a href="https://www.elixir-czech.cz/"><img src="elixir.png" alt="ELIXIR CZ"></a></td></tr></table>
+</body>
+</html>
+
